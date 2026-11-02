@@ -1,7 +1,7 @@
 # AutoSense – Team Agreement
 
 **Course:** Mobile Application Development
-**Team:** 44
+**Team:** T20
 **Project:** AutoSense: AI-Powered Vehicle Audio & Dashboard Diagnostic Assistant
 **Last updated:** 25 October 2026
 
