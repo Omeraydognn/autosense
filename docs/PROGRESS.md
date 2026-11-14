@@ -68,7 +68,7 @@ Still to do in step 4 after the first run:
 | Kaggle token in `~/.kaggle/` | AI Lead | Unblocks step 4 |
 | Firebase **Blaze plan + Storage "Get started"** (EU location), then `firebase deploy --only storage` | Backend Lead / project owner | Media upload is implemented but Storage is not enabled |
 | Register the Android App Check **debug token** before enforcing App Check | Backend Lead | Logged as "Failed to exchange debug token" on the emulator |
-| Restrict the Firebase API keys in Google Cloud console (Android package / iOS bundle / web referrer) | Backend Lead | Repo is public; client keys are expected to be public but should be restricted |
+| **Rotate** the 3 Firebase API keys (they were pushed once and flagged by GitHub secret scanning), restrict the new ones (Android package / iOS bundle / web referrer), put them in `app/firebase.env.json`, then close the GitHub alerts as *revoked* | Project owner | Keys are now out of the repo and branch history, but the old ones were public for a while |
 | iOS build on a Mac with Xcode + CocoaPods (`GoogleService-Info.plist` is present, options are in `firebase_options.dart`) | Frontend Lead | No Xcode on the machine used so far |
 | Real-device test of the mic permission prompt and real speech suppression | Frontend / Quality | Emulator was installed with permissions pre-granted and a silent mic |
 | Car Diagnostics Dataset licence shows **"Unknown"** on Kaggle | Quality Lead | Use stays academic and non-redistributed; ask the author if needed |

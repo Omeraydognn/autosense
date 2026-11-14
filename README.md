@@ -20,8 +20,8 @@ AI-powered vehicle audio & dashboard diagnostic assistant — Team 44, Mobile Ap
 ## Getting started
 
 ```bash
-# App
-cd app && flutter pub get && flutter test && flutter run
+# App (Firebase keys are not in the repo: copy app/firebase.env.example.json → app/firebase.env.json and fill it in)
+cd app && flutter pub get && flutter test && flutter run --dart-define-from-file=firebase.env.json
 
 # Security-rules tests (needs Java 21+ and firebase-tools)
 cd tests/rules && npm ci && npm test
@@ -31,7 +31,9 @@ cd ml && python3.11 -m venv .venv && .venv/bin/pip install -r requirements.txt &
 ```
 
 Run the app against local emulators: `firebase emulators:start --only auth,firestore,storage`, then
-`flutter run --dart-define=USE_EMULATORS=true`. Without a Firebase config the app falls back to local-only mode.
+`flutter run --dart-define=USE_EMULATORS=true` (no keys needed). Without an API key the app falls back to local-only mode.
+
+**Never commit Firebase config files.** `firebase.env.json`, `google-services.json`, `GoogleService-Info.plist` and `lib/firebase_options.dart` are git-ignored; non-secret IDs live in `app/lib/core/firebase/firebase_config.dart`.
 
 CI (`.github/workflows/ci.yml`) runs `dart format`, `flutter analyze`, `flutter test` and the rules tests on every PR to `main`.
 

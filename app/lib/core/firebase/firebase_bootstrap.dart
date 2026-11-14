@@ -6,7 +6,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../firebase_options.dart';
+import 'firebase_config.dart';
 
 /// `flutter run --dart-define=USE_EMULATORS=true` → local Firebase Emulator Suite.
 const useEmulators = bool.fromEnvironment('USE_EMULATORS');
@@ -15,14 +15,19 @@ const useEmulators = bool.fromEnvironment('USE_EMULATORS');
 const appCheckWebKey = String.fromEnvironment('APP_CHECK_WEB_KEY');
 
 /// True when Firebase initialised successfully. Overridden in `main()`;
-/// false in tests and before `flutterfire configure` has been run.
+/// false in tests and when no Firebase API key was provided at build time.
 final firebaseReadyProvider = Provider<bool>((ref) => false);
 
 /// Initialises Firebase, App Check and (optionally) the emulators.
 /// Never throws: on failure the app continues in local-only mode.
 Future<bool> initFirebase() async {
+  final options = FirebaseConfig.forCurrentPlatform(emulators: useEmulators);
+  if (options == null) {
+    debugPrint('[firebase] no API key (see firebase.env.example.json), running local-only');
+    return false;
+  }
   try {
-    await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+    await Firebase.initializeApp(options: options);
   } catch (e) {
     debugPrint('[firebase] not configured, running local-only: $e');
     return false;

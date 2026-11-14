@@ -29,3 +29,9 @@ service-account*.json
 
 # Local tooling
 .claude/
+
+# Firebase client config with API keys — never commit (see app/firebase.env.example.json)
+app/firebase.env.json
+app/lib/firebase_options.dart
+app/android/app/google-services.json
+app/ios/Runner/GoogleService-Info.plist
