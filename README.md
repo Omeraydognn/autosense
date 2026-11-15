@@ -6,6 +6,13 @@ AI-powered vehicle audio & dashboard diagnostic assistant — Team 44, Mobile Ap
 
 **Current status and next steps: [`docs/PROGRESS.md`](docs/PROGRESS.md).**
 
+## P1 links
+
+- CI (GitHub Actions): https://github.com/Omeraydognn/autosense/actions
+- Architecture decision records: [`docs/adr/`](docs/adr/)
+- Issues board: https://github.com/Omeraydognn/autosense/issues
+- Team agreement: [`TEAM.md`](TEAM.md)
+  
 ## Repository layout
 
 | Path | Contents | Owner |
