@@ -1,0 +1,12 @@
+{
+  "name": "autosense-rules-tests",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "cd ../.. && firebase emulators:exec --only firestore,storage --project demo-autosense \"node --test tests/rules/rules.test.js\""
+  },
+  "devDependencies": {
+    "@firebase/rules-unit-testing": "^4.0.1",
+    "firebase": "^11.0.0"
+  }
+}

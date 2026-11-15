@@ -1,0 +1,37 @@
+# OS / IDE
+.DS_Store
+.idea/
+.vscode/
+*.iml
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+ml/data/raw/
+ml/data/processed/
+ml/data/cache/
+*.ckpt
+
+# Node / Firebase
+node_modules/
+functions/lib/
+.firebase/
+firebase-debug.log
+*.local
+
+# Secrets
+.env
+service-account*.json
+
+# Firebase emulator logs
+*-debug.log
+
+# Local tooling
+.claude/
+
+# Firebase client config with API keys — never commit (see app/firebase.env.example.json)
+app/firebase.env.json
+app/lib/firebase_options.dart
+app/android/app/google-services.json
+app/ios/Runner/GoogleService-Info.plist

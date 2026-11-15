@@ -1,0 +1,94 @@
+rules_version = '2';
+
+// AutoSense — Firestore security rules (P0 §5 Privacy).
+//
+//   users/{uid}                     profile + current consent snapshot
+//   users/{uid}/consentLog/{id}     append-only consent history (versioned)
+//   users/{uid}/vehicles/{id}       vehicle profiles (no VIN / plate / location)
+//   users/{uid}/reports/{id}        diagnostic reports (immutable once written)
+//   users/{uid}/devices/{token}     FCM tokens
+//   manualChunks/{id}               RAG corpus — server only (Admin SDK)
+//
+// Every document is restricted to its owner's UID. Anything not matched is denied.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(uid) {
+      return signedIn() && request.auth.uid == uid;
+    }
+
+    function onlyKeys(allowed) {
+      return request.resource.data.keys().hasOnly(allowed);
+    }
+
+    function isShortString(v, max) {
+      return v is string && v.size() > 0 && v.size() <= max;
+    }
+
+    function validConsent(c) {
+      return c is map
+        && c.keys().hasOnly(['version', 'acceptedAt', 'diagnosis', 'modelImprovement', 'notifications'])
+        && c.version is string
+        && c.acceptedAt is string
+        && c.diagnosis is bool
+        && c.modelImprovement is bool
+        && c.notifications is bool;
+    }
+
+    match /users/{uid} {
+      allow read: if isOwner(uid);
+      allow create, update: if isOwner(uid)
+        && onlyKeys(['consent', 'createdAt', 'updatedAt'])
+        && (!('consent' in request.resource.data) || validConsent(request.resource.data.consent));
+      allow delete: if isOwner(uid);
+
+      match /consentLog/{entryId} {
+        allow read: if isOwner(uid);
+        // Append-only: an entry can never be edited after it is written.
+        allow create: if isOwner(uid) && validConsent(request.resource.data);
+        allow update: if false;
+        allow delete: if isOwner(uid);
+      }
+
+      match /vehicles/{vehicleId} {
+        allow read, delete: if isOwner(uid);
+        // Whitelisted keys only — blocks accidental VIN / plate / location fields.
+        allow create, update: if isOwner(uid)
+          && request.resource.data.id == vehicleId
+          && onlyKeys(['id', 'make', 'model', 'year', 'engine', 'fuel', 'transmission',
+                       'mileageKm', 'services', 'updatedAt'])
+          && isShortString(request.resource.data.make, 40)
+          && isShortString(request.resource.data.model, 40)
+          && isShortString(request.resource.data.engine, 40)
+          && request.resource.data.year is int
+          && request.resource.data.year >= 1980 && request.resource.data.year <= 2100
+          && request.resource.data.mileageKm is int
+          && request.resource.data.mileageKm >= 0 && request.resource.data.mileageKm <= 2000000
+          && request.resource.data.services is list
+          && request.resource.data.services.size() <= 500;
+      }
+
+      match /reports/{reportId} {
+        allow read, delete: if isOwner(uid);
+        // TODO(backend): once diagnose() writes reports with the Admin SDK,
+        // change `create` to `if false` so guardrails cannot be bypassed.
+        allow create: if isOwner(uid)
+          && request.resource.data.id == reportId
+          && request.resource.data.urgency in ['U0', 'U1', 'U2', 'U3'];
+        allow update: if false;
+      }
+
+      match /devices/{token} {
+        allow read, write: if isOwner(uid);
+      }
+    }
+
+    match /manualChunks/{chunkId} {
+      allow read, write: if false;
+    }
+  }
+}

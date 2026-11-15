@@ -1,0 +1,13 @@
+# Track A — engine-sound classifier (Python 3.11)
+numpy>=1.26,<2.1
+scipy>=1.11
+scikit-learn>=1.5
+librosa>=0.10.2
+soundfile>=0.12
+pandas>=2.2
+matplotlib>=3.8
+joblib>=1.4
+tensorflow>=2.16,<2.19
+tensorflow-hub>=0.16
+kaggle>=1.6
+pytest>=8

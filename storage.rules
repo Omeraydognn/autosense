@@ -1,0 +1,26 @@
+rules_version = '2';
+
+// AutoSense — Cloud Storage rules.
+// Raw media lives under users/{uid}/media/ and is deleted after 30 days by
+// the retention job (Cloud Function). Only the owner can read or write it.
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    match /users/{uid}/media/{fileName} {
+      allow read, delete: if request.auth != null && request.auth.uid == uid;
+
+      allow create: if request.auth != null
+        && request.auth.uid == uid
+        && request.resource.size < 10 * 1024 * 1024
+        && (request.resource.contentType.matches('audio/.*')
+            || request.resource.contentType.matches('image/.*'));
+
+      // Media is immutable once uploaded.
+      allow update: if false;
+    }
+
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}
