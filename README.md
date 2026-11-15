@@ -1,6 +1,6 @@
 # AutoSense
 
-AI-powered vehicle audio & dashboard diagnostic assistant — Team 44, Mobile Application Development.
+AI-powered vehicle audio & dashboard diagnostic assistant — Team 20, Mobile Application Development.
 
 > AutoSense is a **pre-diagnosis assistant**, not a replacement for a mechanic. Outputs are advisory only.
 
