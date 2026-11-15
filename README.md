@@ -19,7 +19,7 @@ AI-powered vehicle audio & dashboard diagnostic assistant — Team 20, Mobile Ap
 |------|----------|-------|
 | `app/` | Flutter app (Android/iOS/web preview) — screens S1–S5, Riverpod, Firebase sync, on-device privacy | Frontend Lead |
 | `ml/` | Track A — MFCC baseline, YAMNet head, grouped CV, reports | AI Lead |
-| `firestore.rules`, `storage.rules`, `firebase.json` | Firebase security rules and config (project `autosense-team44`) | Backend Lead |
+| `firestore.rules`, `storage.rules`, `firebase.json` | Firebase security rules and config (project `autosense-team20`) | Backend Lead |
 | `tests/rules/` | Security-rules tests on the Firebase emulator | Quality Lead |
 | `functions/`, `rag/` | Cloud Functions and Track B RAG (not started) | Backend / AI Lead |
 | `docs/` | Progress, manual licences, model card (soon) | Quality Lead |
