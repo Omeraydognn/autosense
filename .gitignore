@@ -22,7 +22,13 @@ firebase-debug.log
 
 # Secrets
 .env
+.env.*
+!.env.example
 service-account*.json
+# Kaggle API token (lives in ~/.kaggle/, never in the repo)
+kaggle.json
+access_token
+.kaggle/
 
 # Firebase emulator logs
 *-debug.log
@@ -35,3 +41,7 @@ app/firebase.env.json
 app/lib/firebase_options.dart
 app/android/app/google-services.json
 app/ios/Runner/GoogleService-Info.plist
+# same files anywhere else in the tree
+**/firebase_options.dart
+**/google-services.json
+**/GoogleService-Info.plist
